@@ -1,9 +1,9 @@
-//
-//  NavigatorKitSampleApp.swift
-//  NavigatorKitSample
-//
-//  Created by Gyorgy Grell on 10/15/21.
-//
+/*
+ * Copyright (c) 2021, Gyuri Grell and NavigatorKit contributors. All rights reserved
+ *
+ * Licensed under BSD 3-Clause License.
+ * https://opensource.org/licenses/BSD-3-Clause
+ */
 
 import SwiftUI
 
