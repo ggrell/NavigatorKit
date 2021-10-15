@@ -35,3 +35,7 @@ let package = Package(
     ]
 )
 ```
+[swift-image]:https://img.shields.io/badge/swift-5.3-orange.svg
+[swift-url]: https://swift.org/
+[license-image]: https://img.shields.io/badge/License-BSD%203--Clause-blue.svg
+[license-url]: LICENSE
