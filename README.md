@@ -20,7 +20,7 @@ In Xcode, select: `File > Swift Packages > Add Package Dependency`.
 
 Paste the package github url in the search bar `https://github.com/ggrell/NavigatorKit` and press next and follow instructions given via Xcode to complete installation.
 
-You can then add ManySheets to your file by adding `import NavigatorKit`.
+You can then add NavigatorKit to your file by adding `import NavigatorKit`.
 
 **Or**
 
