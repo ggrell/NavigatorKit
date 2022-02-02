@@ -32,7 +32,7 @@ public class Navigator: ObservableObject {
 
     var stack = [StackElement]()
     
-    private var passBackArgs: (NavigationArgs) -> Void = { _ in }
+    private var completion: (NavigationArgs) -> Void = { _ in }
 
     public init() {}
     
@@ -54,7 +54,7 @@ public class Navigator: ObservableObject {
 
         stack[stack.count - 1].links[destination]?.wrappedValue = true
         stack[stack.count - 1].args[destination] = args
-        passBackArgs = completion
+        self.completion = completion
         print("STACK (\(rootDestination.route)): \(stack)")
     }
 
@@ -85,7 +85,7 @@ public class Navigator: ObservableObject {
                 pop(id: stack[index].id)
             }
         }
-        self.passBackArgs(args)
+        self.completion(args)
         print("STACK (\(rootDestination.route)): \(stack)")
     }
 
