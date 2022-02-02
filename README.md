@@ -10,9 +10,9 @@ NavigatorKit is an opinionated wrapper for NavigationView and NavigationLink tha
 ## Installation
 
 ### Requirements
-* iOS 15.0+
+* iOS 14.0+
 * Xcode 13+
-* Swift 5+
+* Swift 5.4+
 
 # Swift Package Manager
 
