@@ -31,6 +31,8 @@ public class Navigator: ObservableObject {
     var destinations = [String: NavDestination]()
 
     var stack = [StackElement]()
+    
+    private var passBackArgs: (NavigationArgs) -> Void = { _ in }
 
     public init() {}
     
@@ -38,7 +40,8 @@ public class Navigator: ObservableObject {
     /// - Parameters:
     ///   - destination: the id of the destination to navigate to
     ///   - args: the optional arguments to pass to the destination
-    public func navigate(destination: String, args: NavigationArgs = .init()) {
+    ///   - completion: A closure containing argements that are being passed back upon dissmiss.
+    public func navigate(destination: String, args: NavigationArgs = .init(), completion: @escaping (passBackArgs) -> Void = { _ in }) {
         print("------------\nNavigator(\(rootDestination.route)) - Navigate to: \(destination), args: \(args)")
         guard !stack.isEmpty else {
             print("stack is empty, cannot navigate")
@@ -51,11 +54,15 @@ public class Navigator: ObservableObject {
 
         stack[stack.count - 1].links[destination]?.wrappedValue = true
         stack[stack.count - 1].args[destination] = args
+        passBackArgs = completion
         print("STACK (\(rootDestination.route)): \(stack)")
     }
 
     /// Dismiss the current destination on the stack (like going back to the previous screen)
-    public func dismiss(to destination: DismissDestination = .previous) {
+    /// - Parameters:
+    ///   - destination: the id of the destination to navigate to
+    ///   - args: the optional arguments to pass back.
+    public func dismiss(to destination: DismissDestination = .previous, args: NavigationArgs = .init()) {
         print("Navigator(\(rootDestination.route)) - dismiss to: \(destination)")
         guard stack.count >= 2 else {
             print("There's nothing to dismiss")
@@ -78,6 +85,7 @@ public class Navigator: ObservableObject {
                 pop(id: stack[index].id)
             }
         }
+        self.passBackArgs(args)
         print("STACK (\(rootDestination.route)): \(stack)")
     }
 
