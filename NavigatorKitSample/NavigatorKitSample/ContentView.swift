@@ -99,56 +99,74 @@ struct DemoNavigation: View {
 struct GreenScreen: View {
     var isModal = false
     @EnvironmentObject private var navigator: Navigator
+    @State private var returnedText: String? = nil
 
     var body: some View {
         VStack {
             ScrollView {
-                Text("Push a view")
+                Text("Push Yellow")
                     .padding()
                     .onTapGesture {
                         navigator.navigate(destination: "yellow")
                     }
-                Text("Present a view")
+                Text("Present Yellow")
                     .padding()
                     .onTapGesture {
-                        navigator.navigate(destination: "modal_yellow")
+                        navigator.navigate(destination: "modal_yellow") { args in
+                            if let yellowText = args["text"] as? String {
+                                returnedText = yellowText
+                            }
+                        }
                     }
 
-//                ForEach(0..<50) { index in
-//                    Text("Item \(index)")
-//                        .padding()
-//                        .frame(maxWidth: .infinity)
-//                        .background(Color(red: Double.random(in: 0...1), green: Double.random(in: 0...1), blue: Double.random(in: 0...1)))
-//                }
+                if let actualText = returnedText {
+                    Text("Returned text from modal Yellow:\n\(actualText)")
+                        .padding()
+                }
             }
         }
         .navigationTitle("Green screen")
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.green)
+        .background(Color.green, alignment: .center)
+        .ignoresSafeArea(.container, edges: [.bottom])
     }
 }
 
 struct YellowScreen: View {
     var isModal = false
     @EnvironmentObject var navigator: Navigator
+    @State private var textToPassBack: String = ""
+    @State private var returnedText: String? = nil
 
     var body: some View {
-        VStack {
-            Text("Push a view")
+        VStack(alignment: .center) {
+            Text("Push Gray")
                 .padding()
                 .onTapGesture {
                     navigator.navigate(destination: "gray")
                 }
-            Text("Present a view")
+            Text("Present Gray")
                 .padding()
                 .onTapGesture {
-                    navigator.navigate(destination: "modal_gray")
+                    navigator.navigate(destination: "modal_gray") { args in
+                        if let grayText = args["text"] as? String {
+                            returnedText = grayText
+                        }
+                    }
                 }
+
+            if let actualText = returnedText {
+                Text("Returned text from modal Gray:\n\(actualText)")
+                    .padding()
+            }
+
+            TextField("Text to return on dismiss", text: $textToPassBack)
+                .padding()
         }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        navigator.dismiss()
+                        navigator.dismiss(to: .previous(args: ["text": textToPassBack]))
                     }, label: {
                         Text(isModal ? "Dismiss" : "Pop")
                     })
@@ -156,21 +174,26 @@ struct YellowScreen: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .navigationTitle("Yellow Screen")
-            .background(.yellow)
+            .background(Color.yellow, alignment: .center)
+            .ignoresSafeArea(.container, edges: [.bottom])
     }
 }
 
 struct GrayScreen: View {
     var isModal = false
     @EnvironmentObject var navigator: Navigator
+    @State private var textToPassBack: String = ""
 
     var body: some View {
         VStack {
-            Text("Push a view")
+            Text("Push Green")
                 .padding()
                 .onTapGesture {
                     navigator.navigate(destination: "green")
                 }
+
+            TextField("Text to return on dismiss", text: $textToPassBack)
+                .padding()
         }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -182,7 +205,7 @@ struct GrayScreen: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        navigator.dismiss()
+                        navigator.dismiss(to: .previous(args: ["text": textToPassBack]))
                     }, label: {
                         Text(isModal ? "Dismiss" : "Pop")
                     })
@@ -190,6 +213,7 @@ struct GrayScreen: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .navigationTitle("Gray screen")
-            .background(.gray)
+            .background(Color.gray, alignment: .center)
+            .ignoresSafeArea(.container, edges: [.bottom])
     }
 }

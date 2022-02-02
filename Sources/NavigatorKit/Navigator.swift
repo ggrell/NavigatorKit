@@ -13,6 +13,7 @@ struct StackElement: CustomDebugStringConvertible {
     let id: String
     var links: [String: Binding<Bool>] = [:]
     var args: [String: NavigationArgs] = [:]
+    var completion: ((NavigationArgs) -> Void)? = nil
 
     var debugDescription: String {
         "StackElement(id: \(id), links: \(links.map { "(id: \($0.key), active: \($0.value.wrappedValue))" })"
@@ -20,8 +21,14 @@ struct StackElement: CustomDebugStringConvertible {
 }
 
 public enum DismissDestination {
-    case previous
+    /// Navigate to the previous screen
+    /// - Parameter args: Optional set of `NavigationArgs` to pass to the previous screen
+    case previous(args: NavigationArgs? = nil)
+
+    /// Navigate back to a screen already in the stack but not necessarily the previous one
     case screen(route: String)
+
+    /// Navigate back to the root screen
     case root
 }
 
@@ -38,7 +45,10 @@ public class Navigator: ObservableObject {
     /// - Parameters:
     ///   - destination: the id of the destination to navigate to
     ///   - args: the optional arguments to pass to the destination
-    public func navigate(destination: String, args: NavigationArgs = .init()) {
+    ///   - completion: called if the navigated screen attempts to return a set of `NavigationArgs`. Defaults to `nil` if not passed.
+    public func navigate(
+        destination: String, args: NavigationArgs = .init(), completion: ((NavigationArgs) -> Void)? = nil
+    ) {
         print("------------\nNavigator(\(rootDestination.route)) - Navigate to: \(destination), args: \(args)")
         guard !stack.isEmpty else {
             print("stack is empty, cannot navigate")
@@ -51,11 +61,12 @@ public class Navigator: ObservableObject {
 
         stack[stack.count - 1].links[destination]?.wrappedValue = true
         stack[stack.count - 1].args[destination] = args
+        stack[stack.count - 1].completion = completion
         print("STACK (\(rootDestination.route)): \(stack)")
     }
 
     /// Dismiss the current destination on the stack (like going back to the previous screen)
-    public func dismiss(to destination: DismissDestination = .previous) {
+    public func dismiss(to destination: DismissDestination = .previous()) {
         print("Navigator(\(rootDestination.route)) - dismiss to: \(destination)")
         guard stack.count >= 2 else {
             print("There's nothing to dismiss")
@@ -63,8 +74,15 @@ public class Navigator: ObservableObject {
         }
 
         switch destination {
-        case .previous:
+        case .previous(let args):
             stack[stack.count - 2].links.forEach { $0.value.wrappedValue = false }
+            if let navArgs = args {
+                if let completion = stack[stack.count - 2].completion {
+                    completion(navArgs)
+                } else {
+                    print("args passed on dismissing screen, but previous screen didn't set a completion closure")
+                }
+            }
 
         case .screen(let id):
             if let lastIndex = stack.lastIndex(where: { $0.id == id }) {
