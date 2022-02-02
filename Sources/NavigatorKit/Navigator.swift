@@ -40,7 +40,7 @@ public class Navigator: ObservableObject {
     /// - Parameters:
     ///   - destination: the id of the destination to navigate to
     ///   - args: the optional arguments to pass to the destination
-    ///   - completion: A closure containing argements that are being passed back upon dissmiss.
+    ///   - completion: A closure containing arguments that are being passed back upon a dismissal.
     public func navigate(destination: String, args: NavigationArgs = .init(), completion: @escaping (NavigationArgs) -> Void = { _ in }) {
         print("------------\nNavigator(\(rootDestination.route)) - Navigate to: \(destination), args: \(args)")
         guard !stack.isEmpty else {
