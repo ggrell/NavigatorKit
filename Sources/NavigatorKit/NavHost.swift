@@ -9,14 +9,14 @@ import SwiftUI
 
 /// Top level host view for navigation
 public struct NavHost: View {
-    private let navigator: Navigator
+    @StateObject private var navigator: Navigator
 
     public init(
         navigator: Navigator,
         startDestination: String,
         @NavDestinationsBuilder _ destinations: () -> [NavDestination]
     ) {
-        self.navigator = navigator
+        self._navigator = StateObject(wrappedValue: navigator)
         navigator.setDestinations(startDestination, destinations())
     }
 
@@ -43,7 +43,7 @@ public struct NavHost: View {
 }
 
 struct NavigationHostContent: View {
-    let navigator: Navigator
+    @StateObject var navigator: Navigator
     let screen: NavDestination
 
     var body: some View {
