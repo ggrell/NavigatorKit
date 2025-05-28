@@ -11,4 +11,9 @@ public protocol NavDestination {
     var route: String { get }
     var destinations: [String] { get }
     var content: (NavigationArgs) -> AnyView { get }
+    var presentationDetents: Set<PresentationDetent> { get }
+}
+
+extension NavDestination {
+    public var presentationDetents: Set<PresentationDetent> { [] }
 }
