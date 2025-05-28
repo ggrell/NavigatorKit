@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -294,7 +294,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"NavigatorKitSample/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = NavigatorKitSample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -315,7 +315,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"NavigatorKitSample/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = NavigatorKitSample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
