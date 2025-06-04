@@ -12,8 +12,10 @@ public protocol NavDestination {
     var destinations: [String] { get }
     var content: (NavigationArgs) -> AnyView { get }
     var presentationDetents: Set<PresentationDetent> { get }
+    var presentationDragIndicator: Visibility { get }
 }
 
 extension NavDestination {
     public var presentationDetents: Set<PresentationDetent> { [] }
+    public var presentationDragIndicator: Visibility { .hidden }
 }
