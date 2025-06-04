@@ -12,16 +12,19 @@ public struct ModalSheet: NavDestination {
     public let destinations: [String]
     public let content: (NavigationArgs) -> AnyView
     public var presentationDetents: Set<PresentationDetent>
+    public var presentationDragIndicator: Visibility
 
     public init<Content: View>(
         route: String,
         destinations: [String] = [],
         presentationDetents : Set<PresentationDetent> = [],
+        presentationDragIndicator : Visibility = .hidden,
         @ViewBuilder content: @escaping () -> Content
     ) {
         self.route = route
         self.destinations = destinations
         self.presentationDetents = presentationDetents
+        self.presentationDragIndicator = presentationDragIndicator
         self.content = { _ in AnyView(content()) }
     }
 
@@ -29,11 +32,13 @@ public struct ModalSheet: NavDestination {
         route: String,
         destinations: [String] = [],
         presentationDetents : Set<PresentationDetent> = [],
+        presentationDragIndicator : Visibility = .hidden,
         @ViewBuilder _ contentWithArgs: @escaping (NavigationArgs) -> Content
     ) {
         self.route = route
         self.destinations = destinations
         self.presentationDetents = presentationDetents
+        self.presentationDragIndicator = presentationDragIndicator
         self.content = { args in AnyView(contentWithArgs(args)) }
     }
 }
