@@ -30,6 +30,7 @@ struct ModalNavigator: View {
                     }
                     .navigationViewStyle(.stack)
                     .presentationDetents(destinationView.screen.presentationDetents)
+                    .presentationDragIndicator(destinationView.screen.presentationDragIndicator)
                 }
                 .onAppear {
                     navigator.linkAppeared(id: destinationId, isActive: $isPresented)
