@@ -41,6 +41,9 @@ struct ModalNavigator: View {
                 .onChange(of: isPresented) { active in
                     guard !active else { return }
                     // NavigationLink became inactive, so notify navigator to pop this view and anything after it
+                    if destinationView.screen.completeOnDismiss {
+                        navigator.complete(id: destinationId)
+                    }
                     navigator.pop(id: destinationId)
                 }
         }
