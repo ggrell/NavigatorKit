@@ -137,6 +137,12 @@ public class Navigator: ObservableObject {
         print("STACK (\(rootDestination.route)): \(stack)")
     }
 
+    func complete(id: String) {
+        if let lastIndex = stack.lastIndex(where: { $0.id == id }) {
+            stack[stack.count - lastIndex].completion?([:])
+        }
+    }
+
     func filterStackNavigation(destinationIds: [String]) -> [String] {
         destinationIds.filter { destinations[$0] is StackScreen }
     }
